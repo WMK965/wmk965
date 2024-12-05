@@ -12,9 +12,9 @@ const { channel } = Astro.props
 const locale = getEnv(import.meta.env, Astro, 'LOCALE')
 
 const seo = channel?.seo
-const reqPathname = Astro.url.pathname.replace(/\/$/, '')
-const canonical = SITE_URL.startsWith('http') ? new URL(SITE_URL).origin + reqPathname : Astro.url.origin + reqPathname
-
+const canonical = SITE_URL.startsWith('http')
+  ? new URL(SITE_URL).origin + Astro.url.pathname
+  : Astro.url.origin + Astro.url.pathname
 const { origin, pathname } = new URL(canonical)
 const twitter = getEnv(import.meta.env, Astro, 'TWITTER')
 
@@ -22,8 +22,8 @@ const seoParams = {
   title: seo?.title,
   description: seo?.text ?? channel?.description,
   canonical,
-  noindex: seo?.noindex ?? getEnv(import.meta.env, Astro, 'NOINDEX'),
-  nofollow: seo?.nofollow ?? getEnv(import.meta.env, Astro, 'NOFOLLOW'),
+  noindex: getEnv(import.meta.env, Astro, 'NOINDEX'),
+  nofollow: getEnv(import.meta.env, Astro, 'NOFOLLOW'),
   openGraph: {
     basic: {
       type: 'website',
@@ -33,7 +33,7 @@ const seoParams = {
     },
     optional: {
       description: seo?.text ?? channel?.description,
-      locale,
+      locale: getEnv(import.meta.env, Astro, 'LOCALE'),
     },
   },
   extend: {
