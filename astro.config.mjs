@@ -27,6 +27,7 @@ const adapterProvider = process.env.SERVER_ADAPTER || provider
 // https://astro.build/config
 export default defineConfig({
   site: 'https://wmk965.github.io',
+  base: 'wmk965',
   output: 'server',
   adapter: providers[adapterProvider] || providers.node,
   integrations: [
